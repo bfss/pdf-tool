@@ -1,2 +1,5 @@
 venv
-ui.ui
+__pycache__
+
+others
+pdfs
