@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 
-from PySide6.QtCore import Signal, QThread
+from PySide2.QtCore import Signal, QThread
 
 
 class SelectDirThread(QThread):
