@@ -63,7 +63,11 @@ class MainWindow(QMainWindow):
         if flag == 0:
             ErrorDialog('完成啦').exec_()
         elif flag == -1:
-            ErrorDialog('出错啦').exec_()
+            ErrorDialog('没有找到PDF文件').exec_()
+        elif flag == -2:
+            bad_pdfs = self.combine_pdf_thread.get_bad_pdfs()
+            bad_pdfs_str = '\n'.join(bad_pdfs)
+            ErrorDialog('合并完毕，下列这些PDF存在问题，没有被合并：\n' + bad_pdfs_str).exec_()
         self.ui.pushButton_select_pdf_dir.setEnabled(True)
         self.ui.pushButton_select_output.setEnabled(True)
         self.ui.pushButton_combine_pdf.setEnabled(True)

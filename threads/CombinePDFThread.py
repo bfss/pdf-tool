@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import PyPDF2
 from PyPDF2 import PdfFileMerger
 
 from PySide2.QtCore import QThread, Signal
@@ -17,6 +18,8 @@ class CombinePDFThread(QThread):
         self.pdf_dir = pdf_dir
         self.output_dir = output_dir
 
+        self.bad_pdfs = []
+
 
     def run(self):
         pdf_list = []
@@ -33,8 +36,22 @@ class CombinePDFThread(QThread):
 
         merger = PdfFileMerger()
         for pdf in pdf_list:
-            merger.append(open(pdf, 'rb'))
+            try:
+                merger.append(open(pdf, 'rb'))
+            except PyPDF2.utils.PdfReadError:
+                self.bad_pdfs.append(pdf)
+
         combined_pdf_name = datetime.utcnow().strftime("%Y_%m_%d_%H_%M_%S")
         output_file = os.path.join(self.output_dir, combined_pdf_name + '.pdf')
         merger.write(output_file)
-        self.finish_signal.emit(0)
+        merger.close()
+
+        if len(self.bad_pdfs) == 0:
+            self.finish_signal.emit(0)
+        else:
+            self.finish_signal.emit(-2)
+
+    
+    def get_bad_pdfs(self):
+        """返回有问题的pdf"""
+        return self.bad_pdfs
