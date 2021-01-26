@@ -63,7 +63,7 @@ class MainWindow(QMainWindow):
         if flag == 0:
             ErrorDialog('完成啦').exec_()
         elif flag == -1:
-            ErrorDialog('没有找到PDF文件').exec_()
+            ErrorDialog('文件夹应包含至少一个有效的PDF文件').exec_()
         elif flag == -2:
             bad_pdfs = self.combine_pdf_thread.get_bad_pdfs()
             bad_pdfs_str = '\n'.join(bad_pdfs)

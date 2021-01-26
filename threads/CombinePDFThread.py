@@ -22,29 +22,27 @@ class CombinePDFThread(QThread):
 
 
     def run(self):
-        pdf_list = []
+        pdf_count = 0
+        merger = PdfFileMerger()
         for root, dirs, files in os.walk(self.pdf_dir):
             for f in files:
                 filename, file_extension = os.path.splitext(f)
-                if file_extension == '.pdf':
-                    full_path = os.path.join(root, f)
-                    pdf_list.append(full_path)
+                if file_extension.lower() == '.pdf':
+                    pdf = os.path.join(root, f)
+                    try:
+                        merger.append(open(pdf, 'rb'))
+                        pdf_count += 1
+                    except:
+                        self.bad_pdfs.append(pdf)
 
-        if len(pdf_list) == 0:
+        if pdf_count == 0:
             self.finish_signal.emit(-1)
             return
-
-        merger = PdfFileMerger()
-        for pdf in pdf_list:
-            try:
-                merger.append(open(pdf, 'rb'))
-            except PyPDF2.utils.PdfReadError:
-                self.bad_pdfs.append(pdf)
-
-        combined_pdf_name = datetime.utcnow().strftime("%Y_%m_%d_%H_%M_%S")
-        output_file = os.path.join(self.output_dir, combined_pdf_name + '.pdf')
-        merger.write(output_file)
-        merger.close()
+        else:
+            combined_pdf_name = datetime.utcnow().strftime("%Y_%m_%d_%H_%M_%S")
+            output_file = os.path.join(self.output_dir, combined_pdf_name + '.pdf')
+            merger.write(output_file)
+            merger.close()
 
         if len(self.bad_pdfs) == 0:
             self.finish_signal.emit(0)
