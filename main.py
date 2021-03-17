@@ -4,6 +4,8 @@ import sys
 from PySide2.QtWidgets import QApplication, QMainWindow, QFileDialog
 from PySide2.QtCore import Slot
 
+from qt_material import apply_stylesheet
+
 from uis.ui_mainwindow import Ui_MainWindow
 
 from dialogs.errordialog import ErrorDialog
@@ -76,6 +78,8 @@ class MainWindow(QMainWindow):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+
+    apply_stylesheet(app, theme='dark_teal.xml')
 
     window = MainWindow()
     window.show()
