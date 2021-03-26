@@ -27,6 +27,8 @@ class MainWindow(QMainWindow):
         self.ui.pushButton_select_output.clicked.connect(self.select_output_dir)
         self.ui.pushButton_combine_pdf.clicked.connect(self.combine_pdf)
 
+        self.ui.action_about.triggered.connect(self.about)
+
         self.ui.lineEdit_select_pdf_dir.setEnabled(False)
         self.ui.lineEdit_select_output.setEnabled(False)
 
@@ -73,6 +75,11 @@ class MainWindow(QMainWindow):
         self.ui.pushButton_select_pdf_dir.setEnabled(True)
         self.ui.pushButton_select_output.setEnabled(True)
         self.ui.pushButton_combine_pdf.setEnabled(True)
+
+    
+    def about(self):
+        """关于"""
+        ErrorDialog('一款合并pdf的小工具\n版本：0.0.1').exec_()
         
     
 

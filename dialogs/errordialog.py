@@ -1,15 +1,11 @@
 # -*- encoding: utf-8 -*-
-from PySide2.QtWidgets import QDialog
-from PySide2.QtCore import Slot
-
-from uis.ui_errordialog import Ui_Dialog
+from PySide2.QtWidgets import QMessageBox
 
 
-class ErrorDialog(QDialog):
+class ErrorDialog(QMessageBox):
     """错误弹窗"""
     def __init__(self, error_message):
         super().__init__()
-        self.ui = Ui_Dialog()
-        self.ui.setupUi(self)
-        self.ui.label_error_message.setText(error_message)
-
+        self.setWindowTitle('提示')
+        self.setButtonText(1, '好的')
+        self.setText(error_message)
