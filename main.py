@@ -3,6 +3,8 @@ import sys
 
 from PySide2.QtWidgets import QApplication, QMainWindow, QFileDialog
 from PySide2.QtCore import Slot
+# import QtXml to avoid qt_material crush when use pyinstaller
+from PySide2 import QtXml
 
 from qt_material import apply_stylesheet
 
