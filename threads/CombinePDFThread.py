@@ -2,7 +2,7 @@
 import PyPDF2
 from PyPDF2 import PdfFileMerger
 
-from PySide2.QtCore import QThread, Signal
+from PySide6.QtCore import QThread, Signal
 
 import os
 from datetime import datetime
