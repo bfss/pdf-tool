@@ -3,6 +3,7 @@ import sys
 
 from PySide6.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox
 from PySide6.QtCore import Slot
+from PySide6.QtGui import QIcon
 
 from qt_material import apply_stylesheet
 
@@ -18,6 +19,7 @@ class MainWindow(QMainWindow):
         super().__init__()
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
+        self.setWindowIcon(QIcon('y12.ico'))
 
         self.pdf_dir = None
         self.output_dir = None
@@ -95,7 +97,7 @@ class MainWindow(QMainWindow):
         QMessageBox.information(
             self,
             "提示",
-            "一款合并pdf的小工具\n版本：0.0.1"
+            "一款合并pdf的小工具\n\n版本：0.0.1"
         )
 
 
