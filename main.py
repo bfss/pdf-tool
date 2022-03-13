@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 import sys
 
-from PySide6.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox
-from PySide6.QtCore import Slot
-from PySide6.QtGui import QIcon
+from PySide2.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox
+from PySide2.QtCore import Slot
+from PySide2.QtGui import QIcon
 
 from qt_material import apply_stylesheet
 
-from uis.ui_mainwindow import Ui_MainWindow
+from ui.ui_mainwindow import Ui_MainWindow
 
-from threads.CombinePDFThread import CombinePDFThread
+from thread.CombinePDFThread import CombinePDFThread
 
 
 class MainWindow(QMainWindow):
@@ -109,4 +109,4 @@ if __name__ == '__main__':
     window = MainWindow()
     window.show()
 
-    sys.exit(app.exec())
+    sys.exit(app.exec_())
