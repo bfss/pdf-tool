@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
-import PyPDF2
-from PyPDF2 import PdfFileMerger
-
-from PySide2.QtCore import QThread, Signal
-
 import os
 from datetime import datetime
+from PyPDF2 import PdfFileMerger
+from PySide2.QtCore import QThread, Signal
 
 
 class CombinePDFThread(QThread):
@@ -24,9 +21,9 @@ class CombinePDFThread(QThread):
     def run(self):
         pdf_count = 0
         merger = PdfFileMerger()
-        for root, dirs, files in os.walk(self.pdf_dir):
+        for root, _, files in os.walk(self.pdf_dir):
             for f in files:
-                filename, file_extension = os.path.splitext(f)
+                _, file_extension = os.path.splitext(f)
                 if file_extension.lower() == '.pdf':
                     pdf = os.path.join(root, f)
                     try:
@@ -39,7 +36,7 @@ class CombinePDFThread(QThread):
             self.finish_signal.emit(-1)
             return
         else:
-            combined_pdf_name = datetime.utcnow().strftime("%Y_%m_%d_%H_%M_%S")
+            combined_pdf_name = datetime.now().strftime("%Y_%m_%d_%H_%M_%S")
             output_file = os.path.join(self.output_dir, combined_pdf_name + '.pdf')
             merger.write(output_file)
             merger.close()

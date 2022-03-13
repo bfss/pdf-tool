@@ -5,6 +5,3 @@ __pycache__
 build
 dist
 PDFTools.spec
-
-others
-pdfs
