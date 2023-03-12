@@ -14,45 +14,9 @@
    <string>PDF小工具</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout">
-    <item row="0" column="0">
-     <widget class="QGroupBox" name="groupBox">
-      <property name="title">
-       <string>合并PDF</string>
-      </property>
-      <layout class="QGridLayout" name="gridLayout_2">
-       <item row="0" column="0">
-        <widget class="QLineEdit" name="lineEdit_select_pdf_dir"/>
-       </item>
-       <item row="2" column="0" colspan="2">
-        <widget class="QPushButton" name="pushButton_combine_pdf">
-         <property name="text">
-          <string>合并所有PDF</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QPushButton" name="pushButton_select_pdf_dir">
-         <property name="text">
-          <string>选择PDF文件夹</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="1">
-        <widget class="QPushButton" name="pushButton_select_output">
-         <property name="text">
-          <string>选择输出文件夹</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLineEdit" name="lineEdit_select_output"/>
-       </item>
-      </layout>
-     </widget>
-    </item>
-   </layout>
+   <layout class="QGridLayout" name="gridLayout"/>
   </widget>
+  <widget class="QStatusBar" name="statusbar"/>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
     <rect>
@@ -68,12 +32,41 @@
     </property>
     <addaction name="action_about"/>
    </widget>
+   <widget class="QMenu" name="menu_merge">
+    <property name="title">
+     <string>合并PDF</string>
+    </property>
+    <addaction name="action_merge"/>
+   </widget>
+   <widget class="QMenu" name="menu_convert">
+    <property name="title">
+     <string>PDF图片工具</string>
+    </property>
+    <addaction name="action_extract"/>
+    <addaction name="action_convert"/>
+   </widget>
+   <addaction name="menu_merge"/>
+   <addaction name="menu_convert"/>
    <addaction name="menu_help"/>
   </widget>
-  <widget class="QStatusBar" name="statusbar"/>
   <action name="action_about">
    <property name="text">
     <string>关于</string>
+   </property>
+  </action>
+  <action name="action_merge">
+   <property name="text">
+    <string>合并PDF</string>
+   </property>
+  </action>
+  <action name="action_extract">
+   <property name="text">
+    <string>提取图片</string>
+   </property>
+  </action>
+  <action name="action_convert">
+   <property name="text">
+    <string>转图片</string>
    </property>
   </action>
  </widget>
