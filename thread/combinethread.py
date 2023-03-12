@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 import os
 from datetime import datetime
-from PyPDF2 import PdfFileMerger
+from PyPDF2 import PdfMerger
 from PySide2.QtCore import QThread, Signal
 
 
-class CombinePDFThread(QThread):
+class CombineThread(QThread):
     """合并pdf"""
 
     finish_signal = Signal(int)
@@ -20,7 +20,7 @@ class CombinePDFThread(QThread):
 
     def run(self):
         pdf_count = 0
-        merger = PdfFileMerger()
+        merger = PdfMerger()
         for root, _, files in os.walk(self.pdf_dir):
             for f in files:
                 _, file_extension = os.path.splitext(f)

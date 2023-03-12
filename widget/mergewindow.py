@@ -3,7 +3,7 @@ import os
 from PySide2.QtWidgets import QDialog, QFileDialog, QMessageBox
 from PySide2.QtCore import QThread, Signal, Slot
 from ui.ui_merge import Ui_Form
-from thread.CombinePDFThread import CombinePDFThread
+from thread.combinethread import CombineThread
 
 
 class MergeWindow(QDialog):
@@ -53,7 +53,7 @@ class MergeWindow(QDialog):
         output_dir = self.ui.lineEdit_select_output.text().strip()
         if os.path.isdir(pdf_dir) and os.path.isdir(output_dir):
             self.enable_widgets(False)
-            self.combine_pdf_thread = CombinePDFThread(
+            self.combine_pdf_thread = CombineThread(
                 pdf_dir, output_dir)
             self.combine_pdf_thread.finish_signal.connect(
                 self.combine_pdf_thread_finished)
