@@ -7,6 +7,7 @@ from PySide2.QtGui import QIcon
 from qt_material import apply_stylesheet
 from ui.ui_mainwindow import Ui_MainWindow
 from widget.mergewindow import MergeWindow
+from widget.extractwindow import ExtractWindow
 
 
 class MainWindow(QMainWindow):
@@ -19,17 +20,29 @@ class MainWindow(QMainWindow):
         self.setWindowIcon(QIcon('y12.ico'))
 
         self.ui.action_merge.triggered.connect(self.merge)
+        self.ui.action_extract.triggered.connect(self.extract)
+        self.ui.action_convert.triggered.connect(self.convert)
         self.ui.action_about.triggered.connect(self.about)
 
     def merge(self):
         MergeWindow(self).open()
+
+    def extract(self):
+        ExtractWindow(self).open()
+    
+    def convert(self):
+        QMessageBox.information(
+            self,
+            "提示",
+            "功能未开放"
+        )
 
     def about(self):
         """关于"""
         QMessageBox.information(
             self,
             "提示",
-            "一款合并pdf的小工具\n\n版本：0.0.1"
+            "一款PDF小工具\n\n版本：0.0.2"
         )
 
 
