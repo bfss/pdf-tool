@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>800</width>
-    <height>600</height>
+    <width>787</width>
+    <height>578</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -22,8 +22,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>800</width>
-     <height>26</height>
+     <width>787</width>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu_help">
@@ -43,7 +43,6 @@
      <string>PDF图片工具</string>
     </property>
     <addaction name="action_extract"/>
-    <addaction name="action_convert"/>
    </widget>
    <addaction name="menu_merge"/>
    <addaction name="menu_convert"/>
@@ -62,11 +61,6 @@
   <action name="action_extract">
    <property name="text">
     <string>提取图片</string>
-   </property>
-  </action>
-  <action name="action_convert">
-   <property name="text">
-    <string>转图片</string>
    </property>
   </action>
  </widget>

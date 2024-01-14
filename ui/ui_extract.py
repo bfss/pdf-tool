@@ -3,15 +3,20 @@
 ################################################################################
 ## Form generated from reading UI file 'extract.ui'
 ##
-## Created by: Qt User Interface Compiler version 5.15.2
+## Created by: Qt User Interface Compiler version 6.6.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
 
-from PySide2.QtCore import *
-from PySide2.QtGui import *
-from PySide2.QtWidgets import *
-
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QGridLayout, QGroupBox, QLabel,
+    QLineEdit, QPushButton, QSizePolicy, QWidget)
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -44,15 +49,15 @@ class Ui_Form(object):
 
         self.gridLayout_2.addWidget(self.label_2, 1, 0, 1, 1)
 
-        self.lineEdit_output = QLineEdit(self.groupBox)
-        self.lineEdit_output.setObjectName(u"lineEdit_output")
+        self.lineEdit_out = QLineEdit(self.groupBox)
+        self.lineEdit_out.setObjectName(u"lineEdit_out")
 
-        self.gridLayout_2.addWidget(self.lineEdit_output, 1, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.lineEdit_out, 1, 1, 1, 1)
 
-        self.pushButton_output = QPushButton(self.groupBox)
-        self.pushButton_output.setObjectName(u"pushButton_output")
+        self.pushButton_out = QPushButton(self.groupBox)
+        self.pushButton_out.setObjectName(u"pushButton_out")
 
-        self.gridLayout_2.addWidget(self.pushButton_output, 1, 2, 1, 1)
+        self.gridLayout_2.addWidget(self.pushButton_out, 1, 2, 1, 1)
 
         self.pushButton_ok = QPushButton(self.groupBox)
         self.pushButton_ok.setObjectName(u"pushButton_ok")
@@ -74,7 +79,7 @@ class Ui_Form(object):
         self.label.setText(QCoreApplication.translate("Form", u"PDF\u76ee\u5f55\uff1a", None))
         self.pushButton_pdf.setText(QCoreApplication.translate("Form", u"\u9009\u62e9", None))
         self.label_2.setText(QCoreApplication.translate("Form", u"\u8f93\u51fa\u76ee\u5f55\uff1a", None))
-        self.pushButton_output.setText(QCoreApplication.translate("Form", u"\u9009\u62e9", None))
+        self.pushButton_out.setText(QCoreApplication.translate("Form", u"\u9009\u62e9", None))
         self.pushButton_ok.setText(QCoreApplication.translate("Form", u"\u5f00\u59cb\u63d0\u53d6", None))
     # retranslateUi
 

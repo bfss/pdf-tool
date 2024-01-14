@@ -2,13 +2,14 @@
 
 data = []
 data.append(("y12.ico", "."))
+data.append(("venv/Lib/site-packages/PySide6/translations", "PySide6/translations"))
 
 block_cipher = None
 
 
 a = Analysis(
     ['main.py'],
-    pathex=['C:\\Windows\\System32\\downlevel'],
+    pathex=['C:/Windows/System32/downlevel'],
     binaries=[],
     datas=data,
     hiddenimports=[],
@@ -40,6 +41,7 @@ exe = EXE(
     codesign_identity=None,
     entitlements_file=None,
     icon=['y12.ico'],
+    contents_directory="."
 )
 coll = COLLECT(
     exe,

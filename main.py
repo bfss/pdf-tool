@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
-from PySide2.QtWidgets import QApplication, QMainWindow, QFileDialog, QMessageBox
-from PySide2.QtCore import Slot
-from PySide2.QtGui import QIcon
-from qt_material import apply_stylesheet
+import logging
+from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox
+from PySide6.QtGui import QIcon
+from PySide6.QtCore import QTranslator, QLocale, QLibraryInfo
 from ui.ui_mainwindow import Ui_MainWindow
 from widget.mergewindow import MergeWindow
 from widget.extractwindow import ExtractWindow
@@ -21,7 +21,6 @@ class MainWindow(QMainWindow):
 
         self.ui.action_merge.triggered.connect(self.merge)
         self.ui.action_extract.triggered.connect(self.extract)
-        self.ui.action_convert.triggered.connect(self.convert)
         self.ui.action_about.triggered.connect(self.about)
 
     def merge(self):
@@ -30,28 +29,28 @@ class MainWindow(QMainWindow):
     def extract(self):
         ExtractWindow(self).open()
     
-    def convert(self):
-        QMessageBox.information(
-            self,
-            "提示",
-            "功能未开放"
-        )
-
     def about(self):
         """关于"""
         QMessageBox.information(
             self,
             "提示",
-            "一款PDF小工具\n\n版本：0.0.2"
+            "一款PDF小工具\n\n版本：0.1.0"
         )
 
 
 if __name__ == '__main__':
-    app = QApplication(sys.argv)
+    logging.basicConfig(
+        filename="log.txt",
+        filemode="w",
+    )
 
-    apply_stylesheet(app, theme='dark_teal.xml')
+    app = QApplication(sys.argv)
+    translator = QTranslator()
+    translations = os.path.join(os.getcwd(), 'PySide6/translations')
+    if translator.load('qt_ZH_CN', translations):
+        app.installTranslator(translator)
 
     window = MainWindow()
     window.show()
 
-    sys.exit(app.exec_())
+    sys.exit(app.exec())

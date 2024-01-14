@@ -21,31 +21,45 @@
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
-       <widget class="QLineEdit" name="lineEdit_select_pdf_dir"/>
-      </item>
-      <item row="2" column="0" colspan="2">
-       <widget class="QPushButton" name="pushButton_combine_pdf">
+       <widget class="QLabel" name="label">
         <property name="text">
-         <string>合并所有PDF</string>
+         <string>PDF文件夹：</string>
         </property>
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QPushButton" name="pushButton_select_pdf_dir">
-        <property name="text">
-         <string>选择PDF文件夹</string>
-        </property>
-       </widget>
+       <widget class="QLineEdit" name="lineEdit_pdf"/>
       </item>
-      <item row="1" column="1">
-       <widget class="QPushButton" name="pushButton_select_output">
+      <item row="0" column="2">
+       <widget class="QPushButton" name="pushButton_pdf">
         <property name="text">
-         <string>选择输出文件夹</string>
+         <string>选择</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0">
-       <widget class="QLineEdit" name="lineEdit_select_output"/>
+       <widget class="QLabel" name="label_2">
+        <property name="text">
+         <string>输出文件夹：</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="lineEdit_out"/>
+      </item>
+      <item row="1" column="2">
+       <widget class="QPushButton" name="pushButton_out">
+        <property name="text">
+         <string>选择</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="3">
+       <widget class="QPushButton" name="pushButton_ok">
+        <property name="text">
+         <string>开始合并</string>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>

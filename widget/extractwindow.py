@@ -1,10 +1,15 @@
 # -*- coding: utf-8 -*-
 import os
-from PySide2.QtWidgets import QDialog, QFileDialog, QMessageBox
-from PySide2.QtCore import QThread, Signal, Slot
+import glob
+import logging
+from datetime import datetime
+from PyPDF2 import PdfReader
+from PySide6.QtWidgets import QDialog, QFileDialog, QMessageBox
+from PySide6.QtCore import QThread, Signal, Slot
 from ui.ui_extract import Ui_Form
-from thread.extractthread import ExtractThread
 
+
+logger = logging.getLogger("merge")
 
 class ExtractWindow(QDialog):
     def __init__(self, parent):
@@ -14,23 +19,18 @@ class ExtractWindow(QDialog):
         self.setWindowTitle("从PDF提取图片")
 
         self.ui.pushButton_pdf.clicked.connect(self.select_pdf)
-        self.ui.pushButton_output.clicked.connect(self.select_output)
+        self.ui.pushButton_out.clicked.connect(self.select_out)
         self.ui.pushButton_ok.clicked.connect(self.ok)
+        
+        self.worker = None
 
     def enable_widgets(self, flag):
         """启用组件"""
-        if flag:
-            self.ui.lineEdit_output.setEnabled(True)
-            self.ui.lineEdit_pdf.setEnabled(True)
-            self.ui.pushButton_pdf.setEnabled(True)
-            self.ui.pushButton_output.setEnabled(True)
-            self.ui.pushButton_pdf.setEnabled(True)
-        else:
-            self.ui.lineEdit_output.setEnabled(False)
-            self.ui.lineEdit_pdf.setEnabled(False)
-            self.ui.pushButton_pdf.setEnabled(False)
-            self.ui.pushButton_output.setEnabled(False)
-            self.ui.pushButton_pdf.setEnabled(False)
+        self.ui.lineEdit_out.setEnabled(flag)
+        self.ui.lineEdit_pdf.setEnabled(flag)
+        self.ui.pushButton_pdf.setEnabled(flag)
+        self.ui.pushButton_out.setEnabled(flag)
+        self.ui.pushButton_ok.setEnabled(flag)
 
     @Slot()
     def select_pdf(self):
@@ -40,51 +40,84 @@ class ExtractWindow(QDialog):
             self.ui.lineEdit_pdf.setText(selected_dir)
 
     @Slot()
-    def select_output(self):
+    def select_out(self):
         """选择输出文件夹"""
         selected_dir = QFileDialog.getExistingDirectory(self)
         if selected_dir:
-            self.ui.lineEdit_output.setText(selected_dir)
+            self.ui.lineEdit_out.setText(selected_dir)
 
     @Slot()
     def ok(self):
         """图片提取"""
-        pdf_dir = self.ui.lineEdit_pdf.text().strip()
-        output_dir = self.ui.lineEdit_output.text().strip()
-        if os.path.isdir(pdf_dir) and os.path.isdir(output_dir):
-            self.enable_widgets(False)
-            self.combine_pdf_thread = ExtractThread(
-                pdf_dir, output_dir)
-            self.combine_pdf_thread.finish_signal.connect(
-                self.combine_pdf_thread_finished)
-            self.combine_pdf_thread.start()
-        else:
-            QMessageBox.critical(
-                self,
-                "错误",
-                "需要选择有效的文件夹"
-            )
+        pdf_dir = self.ui.lineEdit_pdf.text()
+        out_dir = self.ui.lineEdit_out.text()
+        if os.path.isdir(pdf_dir):
+            self.process_error('无效的PDF文件夹')
+            return
+        if os.path.isdir(out_dir):
+            self.process_error('无效的输出文件夹')
+            return
+        self.enable_widgets(False)
+        self.worker = ExtractThread(pdf_dir, out_dir)
+        self.worker.info_signal.connect(self.process_info)
+        self.worker.error_signal.connect(self.process_error)
+        self.worker.start()
 
-    @Slot(int)
-    def combine_pdf_thread_finished(self, flag):
-        if flag == 0:
-            QMessageBox.information(
-                self,
-                "提示",
-                "完成啦"
-            )
-        elif flag == -1:
-            QMessageBox.critical(
-                self,
-                "错误",
-                "文件夹应包含至少一个有效的PDF文件"
-            )
-        elif flag == -2:
-            bad_pdfs = self.combine_pdf_thread.get_bad_pdfs()
-            bad_pdfs_str = '\n'.join(bad_pdfs)
-            QMessageBox.critical(
-                self,
-                "错误",
-                "合并完毕，下列这些PDF存在问题，没有被合并：\n" + bad_pdfs_str
-            )
+    def process_info(self, message):
+        QMessageBox.information(
+            self,
+            "提示",
+            message
+        )
         self.enable_widgets(True)
+
+    def process_error(self, message):
+        QMessageBox.critical(
+            self,
+            "错误",
+            message
+        )
+        self.enable_widgets(True)
+
+
+class ExtractThread(QThread):
+    """从pdf提取图片"""
+
+    info_signal = Signal(str)
+    error_signal = Signal(str)
+
+    def __init__(self, pdf_dir, out_dir):
+        super().__init__()
+        self.pdf_dir = pdf_dir
+        self.out_dir = out_dir
+
+    def run(self):
+        pdfs = glob.glob(os.path.join(self.pdf_dir, "**/*.pdf"), recursive=True)
+        if not pdfs:
+            self.error_signal.emit("没有找到PDF文件")
+            return
+        
+        has_bad = False
+        for pdf in pdfs:
+            try:
+                reader = PdfReader(pdf)
+                pages = reader.pages
+                count = 0
+                for page in pages:
+                    for image in page.images:
+                        pdfname = os.path.basename(pdf).split(".")[0]
+                        dirname = os.path.join(self.out_dir, pdfname)
+                        os.makedirs(dirname, exist_ok=True)
+                        outfile = os.path.join(dirname, str(count)+".jpg")
+                        with open(outfile, "wb") as f:
+                            f.write(image.data)
+                        count += 1
+            except:
+                has_bad = True
+                logger.critical(f"错误的pdf文件：{pdf}")
+
+        if has_bad:
+            info_message = "提取完成，存在失败的文件，请查阅log.txt"
+        else:
+            info_message = "提取完成"
+        self.info_signal.emit(info_message)
