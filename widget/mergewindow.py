@@ -51,10 +51,10 @@ class MergeWindow(QDialog):
         """合并pdf"""
         pdf_dir = self.ui.lineEdit_pdf.text()
         out_dir = self.ui.lineEdit_out.text()
-        if os.path.isdir(pdf_dir):
+        if not os.path.isdir(pdf_dir):
             self.process_error('无效的PDF文件夹')
             return
-        if os.path.isdir(out_dir):
+        if not os.path.isdir(out_dir):
             self.process_error('无效的输出文件夹')
             return
         
