@@ -2,10 +2,8 @@
 
 If you use pyinstaller for package, use this command:
 
-pyinstaller --window --name=PDFTools -i y12.ico main.py --paths C:\Windows\System32\downlevel
+pyinstaller --window --name=BFPDFTool -i y12.ico main.py
 
-Add an ico file to avoid some anti-virus' alert, such as 360, Tencent
-
-Add --paths to let your exe file be compatibility with win 7 when you built it on win 10
+Notice: Due to limitations of Python and PySide6, this project is only compatible with Windows 10 and above.
 
 The icon is from https://sc.chinaz.com/tubiao/210125547220.htm

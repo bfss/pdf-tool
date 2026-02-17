@@ -34,7 +34,11 @@ class MainWindow(QMainWindow):
         QMessageBox.information(
             self,
             "提示",
-            "一款PDF小工具\n\n版本：0.1.0"
+            (
+                "版本：1.0.0\n"
+                "作者：北方素素\n"
+                "QQ群：1029315180"
+            )
         )
 
 
@@ -42,9 +46,11 @@ if __name__ == '__main__':
     logging.basicConfig(
         filename="log.txt",
         filemode="w",
+        encoding="utf-8"
     )
 
     app = QApplication(sys.argv)
+    app.setStyle("windowsvista")
     translator = QTranslator()
     translations = os.path.join(os.getcwd(), 'PySide6/translations')
     if translator.load('qt_ZH_CN', translations):

@@ -3,7 +3,7 @@ import os
 import glob
 import logging
 from datetime import datetime
-from PyPDF2 import PdfMerger
+from pypdf import PdfWriter
 from PySide6.QtWidgets import QDialog, QFileDialog, QMessageBox
 from PySide6.QtCore import QThread, Signal, Slot
 from ui.ui_merge import Ui_Form
@@ -21,8 +21,6 @@ class MergeWindow(QDialog):
         self.ui.pushButton_pdf.clicked.connect(self.select_pdf)
         self.ui.pushButton_out.clicked.connect(self.select_out)
         self.ui.pushButton_ok.clicked.connect(self.ok)
-
-        self.worker = None
 
     def enable_widgets(self, flag):
         """启用组件"""
@@ -98,7 +96,7 @@ class MergeThread(QThread):
             self.error_signal.emit("没有找到PDF文件")
             return
         has_bad = False
-        merger = PdfMerger()
+        merger = PdfWriter()
         for pdf in pdfs:
             try:
                 merger.append(open(pdf, 'rb'))

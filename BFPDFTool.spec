@@ -4,12 +4,9 @@ data = []
 data.append(("y12.ico", "."))
 data.append(("venv/Lib/site-packages/PySide6/translations", "PySide6/translations"))
 
-block_cipher = None
-
-
 a = Analysis(
     ['main.py'],
-    pathex=['C:/Windows/System32/downlevel'],
+    pathex=[],
     binaries=[],
     datas=data,
     hiddenimports=[],
@@ -17,19 +14,17 @@ a = Analysis(
     hooksconfig={},
     runtime_hooks=[],
     excludes=[],
-    win_no_prefer_redirects=False,
-    win_private_assemblies=False,
-    cipher=block_cipher,
     noarchive=False,
+    optimize=0,
 )
-pyz = PYZ(a.pure, a.zipped_data, cipher=block_cipher)
+pyz = PYZ(a.pure)
 
 exe = EXE(
     pyz,
     a.scripts,
     [],
     exclude_binaries=True,
-    name='PDFTools',
+    name='BFPDFTool',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
@@ -46,10 +41,9 @@ exe = EXE(
 coll = COLLECT(
     exe,
     a.binaries,
-    a.zipfiles,
     a.datas,
     strip=False,
     upx=True,
     upx_exclude=[],
-    name='PDFTools',
+    name='BFPDFTool',
 )

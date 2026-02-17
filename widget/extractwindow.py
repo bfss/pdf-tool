@@ -3,7 +3,7 @@ import os
 import glob
 import logging
 from datetime import datetime
-from PyPDF2 import PdfReader
+from pypdf import PdfReader
 from PySide6.QtWidgets import QDialog, QFileDialog, QMessageBox
 from PySide6.QtCore import QThread, Signal, Slot
 from ui.ui_extract import Ui_Form
@@ -21,8 +21,6 @@ class ExtractWindow(QDialog):
         self.ui.pushButton_pdf.clicked.connect(self.select_pdf)
         self.ui.pushButton_out.clicked.connect(self.select_out)
         self.ui.pushButton_ok.clicked.connect(self.ok)
-        
-        self.worker = None
 
     def enable_widgets(self, flag):
         """启用组件"""
