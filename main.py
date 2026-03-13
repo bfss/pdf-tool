@@ -35,7 +35,7 @@ class MainWindow(QMainWindow):
             self,
             "提示",
             (
-                "版本：1.0.0\n"
+                "版本：1.1.0\n"
                 "作者：北方素素\n"
                 "QQ群：1029315180"
             )
