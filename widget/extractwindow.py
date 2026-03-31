@@ -9,33 +9,29 @@ from PySide6.QtCore import QThread, Signal, Slot
 from ui.ui_extract import Ui_Form
 
 
-logger = logging.getLogger("merge")
+logger = logging.getLogger("提取图片")
 
 class ExtractWindow(QDialog):
     def __init__(self, parent):
         super().__init__(parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self.setWindowTitle("从PDF提取图片")
+        self.setWindowTitle("提取PDF图片")
 
         self.ui.pushButton_pdf.clicked.connect(self.select_pdf)
         self.ui.pushButton_out.clicked.connect(self.select_out)
         self.ui.pushButton_ok.clicked.connect(self.ok)
 
-    def enable_widgets(self, flag):
-        """启用组件"""
-        self.ui.lineEdit_out.setEnabled(flag)
-        self.ui.lineEdit_pdf.setEnabled(flag)
-        self.ui.pushButton_pdf.setEnabled(flag)
-        self.ui.pushButton_out.setEnabled(flag)
-        self.ui.pushButton_ok.setEnabled(flag)
+        self.pdfs = []
 
     @Slot()
     def select_pdf(self):
         """选择PDF文件夹"""
-        selected_dir = QFileDialog.getExistingDirectory(self)
-        if selected_dir:
-            self.ui.lineEdit_pdf.setText(selected_dir)
+        pdf_dir = QFileDialog.getExistingDirectory(self)
+        if pdf_dir:
+            self.ui.lineEdit_pdf.setText(pdf_dir)
+            self.pdfs = glob.glob(os.path.join(pdf_dir, "*.pdf"))
+            self.ui.listWidget.addItems(self.pdfs)
 
     @Slot()
     def select_out(self):
@@ -47,21 +43,20 @@ class ExtractWindow(QDialog):
     @Slot()
     def ok(self):
         """图片提取"""
-        pdf_dir = self.ui.lineEdit_pdf.text()
-        out_dir = self.ui.lineEdit_out.text()
-        if not os.path.isdir(pdf_dir):
-            self.process_error('无效的PDF文件夹')
+        if not self.pdfs:
+            self.process_error("PDF列表为空")
             return
+        out_dir = self.ui.lineEdit_out.text().strip()
         if not os.path.isdir(out_dir):
             self.process_error('无效的输出文件夹')
             return
         self.enable_widgets(False)
-        self.worker = ExtractThread(pdf_dir, out_dir)
+        self.worker = ExtractThread(self.pdfs, out_dir)
         self.worker.info_signal.connect(self.process_info)
         self.worker.error_signal.connect(self.process_error)
         self.worker.start()
 
-    def process_info(self, message):
+    def process_info(self, message: str):
         QMessageBox.information(
             self,
             "提示",
@@ -69,13 +64,22 @@ class ExtractWindow(QDialog):
         )
         self.enable_widgets(True)
 
-    def process_error(self, message):
+    def process_error(self, message: str):
         QMessageBox.critical(
             self,
             "错误",
             message
         )
         self.enable_widgets(True)
+
+    def enable_widgets(self, flag: bool):
+        """启用组件"""
+        self.ui.lineEdit_out.setEnabled(flag)
+        self.ui.lineEdit_pdf.setEnabled(flag)
+        self.ui.pushButton_pdf.setEnabled(flag)
+        self.ui.pushButton_out.setEnabled(flag)
+        self.ui.listWidget.setEnabled(flag)
+        self.ui.pushButton_ok.setEnabled(flag)
 
 
 class ExtractThread(QThread):
@@ -84,19 +88,14 @@ class ExtractThread(QThread):
     info_signal = Signal(str)
     error_signal = Signal(str)
 
-    def __init__(self, pdf_dir, out_dir):
+    def __init__(self, pdfs: list[str], out_dir: str):
         super().__init__()
-        self.pdf_dir = pdf_dir
+        self.pdfs = pdfs
         self.out_dir = out_dir
 
     def run(self):
-        pdfs = glob.glob(os.path.join(self.pdf_dir, "**/*.pdf"), recursive=True)
-        if not pdfs:
-            self.error_signal.emit("没有找到PDF文件")
-            return
-        
         has_bad = False
-        for pdf in pdfs:
+        for pdf in self.pdfs:
             try:
                 reader = PdfReader(pdf)
                 pages = reader.pages
@@ -115,7 +114,7 @@ class ExtractThread(QThread):
                 logger.critical(f"错误的pdf文件：{pdf}")
 
         if has_bad:
-            info_message = "提取完成，存在失败的文件，请查阅log.txt"
+            info_message = "提取完成，存在失败的文件，请查阅程序目录下的log.txt"
         else:
             info_message = "提取完成"
         self.info_signal.emit(info_message)

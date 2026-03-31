@@ -15,7 +15,7 @@ from PySide6.QtCore import QThread, Signal, Slot
 from ui.ui_merge import Ui_Form
 
 
-logger = logging.getLogger("merge")
+logger = logging.getLogger("合并文件")
 
 class MergeWindow(QDialog):
     def __init__(self, parent):

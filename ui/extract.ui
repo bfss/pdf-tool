@@ -7,23 +7,26 @@
     <x>0</x>
     <y>0</y>
     <width>653</width>
-    <height>468</height>
+    <height>479</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
-  <layout class="QGridLayout" name="gridLayout">
+  <layout class="QGridLayout" name="gridLayout_3">
    <item row="0" column="0">
-    <widget class="QGroupBox" name="groupBox">
-     <property name="title">
-      <string>提取图片</string>
+    <widget class="QFrame" name="frame">
+     <property name="frameShape">
+      <enum>QFrame::Shape::StyledPanel</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Shadow::Raised</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
       <item row="0" column="0">
        <widget class="QLabel" name="label">
         <property name="text">
-         <string>PDF目录：</string>
+         <string>PDF文件夹：</string>
         </property>
        </widget>
       </item>
@@ -37,31 +40,43 @@
         </property>
        </widget>
       </item>
-      <item row="1" column="0">
+      <item row="0" column="3">
        <widget class="QLabel" name="label_2">
         <property name="text">
-         <string>输出目录：</string>
+         <string>输出文件夹：</string>
         </property>
        </widget>
       </item>
-      <item row="1" column="1">
+      <item row="0" column="4">
        <widget class="QLineEdit" name="lineEdit_out"/>
       </item>
-      <item row="1" column="2">
+      <item row="0" column="5">
        <widget class="QPushButton" name="pushButton_out">
         <property name="text">
          <string>选择</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="0" colspan="3">
-       <widget class="QPushButton" name="pushButton_ok">
-        <property name="text">
-         <string>开始提取</string>
-        </property>
-       </widget>
+     </layout>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QGroupBox" name="groupBox_2">
+     <property name="title">
+      <string>文件列表</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="0">
+       <widget class="QListWidget" name="listWidget"/>
       </item>
      </layout>
+    </widget>
+   </item>
+   <item row="2" column="0">
+    <widget class="QPushButton" name="pushButton_ok">
+     <property name="text">
+      <string>开始提取</string>
+     </property>
     </widget>
    </item>
   </layout>
